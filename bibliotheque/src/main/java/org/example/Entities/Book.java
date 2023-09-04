@@ -8,16 +8,17 @@ public class Book {
     private int quantitydispo;
     private int bookmissing;
     private float prix;
-    private int auteurid;
+    private Auteur auteur;
 
-    public Book(String title, int quantitytotal, int quantitydispo, int bookmissing, float prix, int auteurid) {
+    public Book(String title, int quantitytotal, int quantitydispo, int bookmissing, float prix, Auteur auteur) {
         this.title = title;
         this.quantitytotal = quantitytotal;
         this.quantitydispo = quantitydispo;
         this.bookmissing = bookmissing;
         this.prix = prix;
-        this.auteurid = auteurid;
+        this.auteur = auteur;
     }
+    public Book(){}
 
     public int getId() {
         return id;
@@ -67,11 +68,11 @@ public class Book {
         this.prix = prix;
     }
 
-    public int getAuteurid() {
-        return auteurid;
+    public Auteur getAuteur() {
+        return auteur;
     }
 
-    public void setAuteurid(int auteurid) {
-        this.auteurid = auteurid;
+    public void setAuteur(Auteur auteur) {
+        this.auteur = auteur;
     }
 }

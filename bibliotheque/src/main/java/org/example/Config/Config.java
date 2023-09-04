@@ -19,7 +19,6 @@ public class Config {
             connection = DriverManager.getConnection(url, username, password);
         } catch (Exception e) {
             e.printStackTrace();
-            // Handle or log the exception as needed
         }
 
         return connection;

@@ -17,8 +17,8 @@ public class MainMenu {
         Scanner scanner = new Scanner(System.in);
         AdminService adminService = new AdminService();
         while (true) {
-            System.out.println("1. Add Person");
-            System.out.println("2. Delete Person");
+            System.out.println("1. Add auteur");
+            System.out.println("2. Delete Book");
             System.out.println("3. Modify Person");
             System.out.println("4. Show List");
             System.out.println("5. title");
@@ -30,10 +30,9 @@ public class MainMenu {
             switch (choice) {
                 case 1:
                     adminService.addAuteur();
-
-
                     break;
-
+                case 2:
+                    adminService.addBook();
 
             }
         }

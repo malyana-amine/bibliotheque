@@ -5,16 +5,16 @@ import java.time.LocalDate;
 public class Demande {
 
     private int id;
-    private int userid;
-    private int bookid;
+    private Users user;
+    private Book book;
     private LocalDate startdate;
     private LocalDate enddate;
     private int quantity;
     private boolean returned;
 
-    public Demande(int userid, int bookid, LocalDate startdate, LocalDate enddate, int quantity, boolean returned) {
-        this.userid = userid;
-        this.bookid = bookid;
+    public Demande(Users user, Book book, LocalDate startdate, LocalDate enddate, int quantity, boolean returned) {
+        this.user = user;
+        this.book = book;
         this.startdate = startdate;
         this.enddate = enddate;
         this.quantity = quantity;
@@ -29,20 +29,20 @@ public class Demande {
         this.id = id;
     }
 
-    public int getUserid() {
-        return userid;
+    public Users getUser() {
+        return user;
     }
 
-    public void setUserid(int userid) {
-        this.userid = userid;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
-    public int getBookid() {
-        return bookid;
+    public Book getBook() {
+        return book;
     }
 
-    public void setBookid(int bookid) {
-        this.bookid = bookid;
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     public LocalDate getStartdate() {
