@@ -8,6 +8,12 @@ public class Auteur {
     public Auteur(String name) {
         this.name = name;
     }
+
+    public Auteur(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Auteur() {
     }
 

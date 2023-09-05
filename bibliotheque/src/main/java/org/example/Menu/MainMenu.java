@@ -3,6 +3,7 @@ package org.example.Menu;
 import org.example.Config.Config;
 import org.example.Entities.Auteur;
 import org.example.Services.AdminService;
+import org.example.Services.BookService;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -10,12 +11,13 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-    public void menu(){
+    public void menu() throws Exception {
 
 
 
         Scanner scanner = new Scanner(System.in);
         AdminService adminService = new AdminService();
+        BookService bookService = new BookService();
         while (true) {
             System.out.println("1. Add auteur");
             System.out.println("2. Delete Book");
@@ -32,7 +34,7 @@ public class MainMenu {
                     adminService.addAuteur();
                     break;
                 case 2:
-                    adminService.addBook();
+                 bookService.addBook();
 
             }
         }

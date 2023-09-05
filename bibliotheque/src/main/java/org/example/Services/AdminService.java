@@ -24,26 +24,7 @@ public class AdminService {
 
     }
 
-    public void addBook(){
-        Book book = new Book();
 
-        System.out.print("Enter book title: ");
-        book.setTitle(scanner.nextLine());
-
-        System.out.print("Enter book quantity: ");
-        book.setQuantitytotal(scanner.nextInt());
-
-        System.out.print("Enter book prix: ");
-        book.setPrix(scanner.nextFloat());
-
-        System.out.print("Enter book auteur: ");
-        String authorName = scanner.nextLine();
-        Auteur auteur = new Auteur(authorName);
-        book.setAuteur(auteur);
-        bookRepository.Insert(book);
-
-
-    }
 
 
 }
