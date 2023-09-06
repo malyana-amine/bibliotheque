@@ -9,15 +9,26 @@ public class Book {
     private int bookmissing;
     private float prix;
     private Auteur auteur;
+    private String isbn;
 
-    public Book(String title, int quantitytotal, int quantitydispo, int bookmissing, float prix, Auteur auteur) {
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public Book(String title, int quantitytotal, int quantitydispo, int bookmissing, float prix, Auteur auteur, String isbn) {
         this.title = title;
         this.quantitytotal = quantitytotal;
         this.quantitydispo = quantitydispo;
         this.bookmissing = bookmissing;
         this.prix = prix;
         this.auteur = auteur;
+        this.isbn = isbn;
     }
+
     public Book(){}
 
     public int getId() {

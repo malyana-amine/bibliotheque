@@ -1,4 +1,4 @@
-package sq.src;
+package org.example;
 
 import org.example.Menu.MainMenu;
 import org.example.Repositories.AuteurRepository;
@@ -11,7 +11,8 @@ import static java.time.InstantSource.system;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        MainMenu menu = new MainMenu();
-        menu.menu();
+
+        MainMenu.menu();
     }
 }
+

@@ -11,7 +11,27 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-    public void menu() throws Exception {
+
+    public static void LibraryLogo(){
+        System.out.println("█████████████████████████████████████████████████████████████████████████████\n");
+
+        System.out.println(" ▄█        ▄█  ▀█████████▄     ▄████████    ▄████████    ▄████████ ▄██   ▄   \n" +
+                "███       ███    ███    ███   ███    ███   ███    ███   ███    ███ ███   ██▄ \n" +
+                "███       ███▌   ███    ███   ███    ███   ███    ███   ███    ███ ███▄▄▄███ \n" +
+                "███       ███▌  ▄███▄▄▄██▀   ▄███▄▄▄▄██▀   ███    ███  ▄███▄▄▄▄██▀ ▀▀▀▀▀▀███ \n" +
+                "███       ███▌ ▀▀███▀▀▀██▄  ▀▀███▀▀▀▀▀   ▀███████████ ▀▀███▀▀▀▀▀   ▄██   ███ \n" +
+                "███       ███    ███    ██▄ ▀███████████   ███    ███ ▀███████████ ███   ███ \n" +
+                "███▌    ▄ ███    ███    ███   ███    ███   ███    ███   ███    ███ ███   ███ \n" +
+                "█████▄▄██ █▀   ▄█████████▀    ███    ███   ███    █▀    ███    ███  ▀█████▀  \n" +
+                "                              ███    ███                ███    ███           \n");
+
+        System.out.println("█████████████████████████████████████████████████████████████████████████████");
+
+    };
+
+    public static void menu() throws Exception {
+
+
 
 
 
@@ -20,21 +40,25 @@ public class MainMenu {
         BookService bookService = new BookService();
         while (true) {
             System.out.println("1. Add auteur");
-            System.out.println("2. Delete Book");
-            System.out.println("3. Modify Person");
-            System.out.println("4. Show List");
-            System.out.println("5. title");
+            System.out.println("2. add Book");
+            System.out.println("3. Modify book");
+            System.out.println("4. delete book");
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
+
+           
 
 
             switch (choice) {
                 case 1:
                     adminService.addAuteur();
-                    break;
                 case 2:
                  bookService.addBook();
+                case 3:
+                    bookService.updateBook();
+                case 4:
+                    bookService.deleteBook();
 
             }
         }

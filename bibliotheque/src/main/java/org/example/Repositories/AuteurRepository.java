@@ -22,8 +22,10 @@ public class AuteurRepository {
 
             if (rowsAffected > 0) {
                 Auteur auteur2 = findByName(auteur.getName());
-                System.out.println("Person added successfully with ID: " + auteur2.getId()+auteur2.getName());
+                System.out.println("Auteur added successfully with ID: " + auteur2.getId()+auteur2.getName());
+                MainMenu.menu();
                 return auteur2;
+
             } else {
                 System.out.println("Failed to add person.");
             }
@@ -63,4 +65,28 @@ public class AuteurRepository {
         }
 
     }
+    public Auteur findById(int id) throws Exception {
+        String findQuery = "SELECT * FROM auteur WHERE id = ?";
+
+        try (Connection connection = config.createConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(findQuery)) {
+            preparedStatement.setInt(1, id);
+
+            ResultSet data = preparedStatement.executeQuery();
+
+            if (data.next()) {
+                String name = data.getString("name"); // Adjust this line based on your database schema
+
+                // Create an Auteur object with the retrieved data
+                Auteur auteur = new Auteur(id, name);
+                return auteur;
+            } else {
+                // If no author with the given ID is found, you may choose to return null or throw an exception
+                throw new Exception("Author not found with ID: " + id);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Error occurred: " + e.getMessage());
+        }
+    }
+
 }
