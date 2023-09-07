@@ -43,6 +43,8 @@ public class MainMenu {
             System.out.println("2. add Book");
             System.out.println("3. Modify book");
             System.out.println("4. delete book");
+            System.out.println("5. search book");
+            System.out.println("6. display book details");
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
@@ -59,7 +61,10 @@ public class MainMenu {
                     bookService.updateBook();
                 case 4:
                     bookService.deleteBook();
-
+                case 5:
+                    bookService.searchBook();
+                case 6:
+                    bookService.displayAllBooks();
             }
         }
 

@@ -5,6 +5,7 @@ import org.example.Entities.Book;
 import org.example.Repositories.AuteurRepository;
 import org.example.Repositories.BookRepository;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class BookService {
@@ -24,11 +25,11 @@ public class BookService {
         book.setPrix(scanner.nextFloat());
 
         System.out.print("Enter book isbn: ");
-        scanner.nextLine(); // Consume the newline character
+        scanner.nextLine();
         book.setIsbn(scanner.nextLine());
 
         System.out.print("Enter book author: ");
-       // scanner.nextLine(); // Consume the newline character
+
         String authorName = scanner.nextLine();
 
 
@@ -45,7 +46,7 @@ public class BookService {
     public void updateBook() throws Exception {
         System.out.print("Enter book ISBN: ");
         int isbn = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
+        scanner.nextLine();
 
         BookRepository bookRepository = new BookRepository();
         Book foundBook = bookRepository.findBook(isbn);
@@ -79,7 +80,7 @@ public class BookService {
         String newIsbn = scanner.nextLine();
         foundBook.setIsbn(newIsbn);
 
-        // Update the book in the database
+
         bookRepository.update(foundBook);
         System.out.println("Book updated successfully!");
     }
@@ -92,6 +93,50 @@ public class BookService {
 
         BookRepository bookRepository = new BookRepository();
         bookRepository.delete(isbn);
+    }
+
+    public void searchBook() throws Exception {
+        System.out.print("Enter search term (title, ID, or author): ");
+        String searchTerm = scanner.nextLine();
+
+        List<Book> foundBooks = bookRepository.searchBook(searchTerm);
+
+        if (foundBooks.isEmpty()) {
+            System.out.println("No books found matching the search term: " + searchTerm);
+        } else {
+            System.out.println("Found books:");
+            for (Book book : foundBooks) {
+                System.out.println(book.getId() + " - " + book.getTitle() + " by " + book.getAuteur().getName());
+
+            }
+        }
+    }
+
+    public void displayAllBooks() {
+        try {
+            List<Book> allBooks = bookRepository.getAllBooks();
+
+            if (allBooks.isEmpty()) {
+                System.out.println("No books found in the database.");
+            } else {
+                System.out.println("All Books:");
+
+                for (Book book : allBooks) {
+                    System.out.println("ID: " + book.getId());
+                    System.out.println("Title: " + book.getTitle());
+                    System.out.println("Quantity Total: " + book.getQuantitytotal());
+                    System.out.println("Quantity Dispo: " + book.getQuantitydispo());
+                    System.out.println("Book Missing: " + book.getBookmissing());
+                    System.out.println("Price: " + book.getPrix());
+                    System.out.println("ISBN: " + book.getIsbn());
+                    System.out.println("Author: " + book.getAuteur().getName());
+
+                    System.out.println("------------------------");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred while retrieving and displaying books: " + e.getMessage());
+        }
     }
 
 

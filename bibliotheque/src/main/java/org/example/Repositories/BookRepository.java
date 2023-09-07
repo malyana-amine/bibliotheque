@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.*;
+import java.util.List;
 
 public class BookRepository {
     Config config = new Config();
@@ -115,12 +117,100 @@ public class BookRepository {
                 MainMenu.menu();
             } else {
                 System.out.println("No book found with ID " + bookId + ". Nothing deleted.");
+                MainMenu.menu();
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Handle the exception appropriately, e.g., log it or throw a custom exception
+            e.printStackTrace();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
+    public List<Book> getAllBooks() throws Exception {
+        List<Book> allBooks = new ArrayList<>();
+
+        String selectQuery = "SELECT * FROM book";
+
+        try (Connection connection = config.createConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
+
+            ResultSet data = preparedStatement.executeQuery();
+
+            while (data.next()) {
+                int id = data.getInt("id");
+                String title = data.getString("title");
+                int quantityTotal = data.getInt("quantitytotal");
+                int quantityDispo = data.getInt("quantitydispo");
+                int bookMissing = data.getInt("bookmissing");
+                float prix = data.getFloat("prix");
+                int auteurId = data.getInt("auteurid");
+                String isbn = data.getString("isbn");
+
+                // Retrieve the author from the AuteurRepository
+                AuteurRepository auteurRepository = new AuteurRepository();
+                Auteur author = auteurRepository.findById(auteurId);
+
+                // Create a Book object with the retrieved data
+                Book book = new Book(title, quantityTotal, quantityDispo, bookMissing, prix, author, isbn);
+                book.setId(id);
+
+                allBooks.add(book);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Error occurred: " + e.getMessage());
+        }
+
+        return allBooks;
+    }
+
+
+    public List<Book> searchBook(String searchTerm) throws Exception {
+        List<Book> foundBooks =new ArrayList<Book>();
+        String searchQuery = "SELECT * FROM book WHERE title LIKE ? OR id = ? OR auteurid = ?";
+
+        try (Connection connection = config.createConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(searchQuery)) {
+            preparedStatement.setString(1, "%" + searchTerm + "%"); // Search for titles containing the searchTerm
+
+            try {
+                int searchTermAsInt = Integer.parseInt(searchTerm);
+                preparedStatement.setInt(2, searchTermAsInt); // Set as integer for id search
+                preparedStatement.setInt(3, searchTermAsInt); // Set as integer for auteurid search
+            } catch (NumberFormatException e) {
+                // Handle the case where searchTerm is not a valid integer
+                preparedStatement.setInt(2, -1); // Set a placeholder value for id (you can choose an appropriate placeholder)
+                preparedStatement.setInt(3, -1); // Set a placeholder value for auteurid
+            }
+
+            ResultSet data = preparedStatement.executeQuery();
+
+            while (data.next()) {
+                int id = data.getInt("id");
+                String title = data.getString("title");
+                int quantityTotal = data.getInt("quantitytotal");
+                int quantityDispo = data.getInt("quantitydispo");
+                int bookMissing = data.getInt("bookmissing");
+                float prix = data.getFloat("prix");
+                int auteurId = data.getInt("auteurid");
+                String isbn = data.getString("isbn");
+
+                // Retrieve the author from the AuteurRepository
+                AuteurRepository auteurRepository = new AuteurRepository();
+                Auteur author = auteurRepository.findById(auteurId);
+
+                // Create a Book object with the retrieved data
+                Book book = new Book(title, quantityTotal, quantityDispo, bookMissing, prix, author, isbn);
+                book.setId(id);
+
+                foundBooks.add(book);
+
+            }
+        } catch (SQLException e) {
+            throw new Exception("Error occurred: " + e.getMessage());
+        }
+
+        return foundBooks;
+    }
+
 
 }

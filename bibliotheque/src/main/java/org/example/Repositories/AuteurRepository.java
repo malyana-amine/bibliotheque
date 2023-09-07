@@ -75,13 +75,12 @@ public class AuteurRepository {
             ResultSet data = preparedStatement.executeQuery();
 
             if (data.next()) {
-                String name = data.getString("name"); // Adjust this line based on your database schema
+                String name = data.getString("name");
 
-                // Create an Auteur object with the retrieved data
                 Auteur auteur = new Auteur(id, name);
                 return auteur;
             } else {
-                // If no author with the given ID is found, you may choose to return null or throw an exception
+
                 throw new Exception("Author not found with ID: " + id);
             }
         } catch (SQLException e) {
