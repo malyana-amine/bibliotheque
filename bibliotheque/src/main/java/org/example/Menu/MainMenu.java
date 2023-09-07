@@ -4,6 +4,7 @@ import org.example.Config.Config;
 import org.example.Entities.Auteur;
 import org.example.Services.AdminService;
 import org.example.Services.BookService;
+import org.example.Services.DemandeService;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -38,6 +39,7 @@ public class MainMenu {
         Scanner scanner = new Scanner(System.in);
         AdminService adminService = new AdminService();
         BookService bookService = new BookService();
+        DemandeService demandeService = new DemandeService();
         while (true) {
             System.out.println("1. Add auteur");
             System.out.println("2. add Book");
@@ -65,6 +67,8 @@ public class MainMenu {
                     bookService.searchBook();
                 case 6:
                     bookService.displayAllBooks();
+                case 7:
+                    demandeService.addDemande();
             }
         }
 

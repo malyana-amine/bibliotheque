@@ -12,9 +12,9 @@ public class AuteurRepository {
     public Auteur Insert(Auteur auteur){
 
         String insertQuery = "INSERT INTO auteur (name) VALUES (?)";
-        // Initialize with a default value
 
-        try (Connection connection = config.createConnection();
+
+        try (
              PreparedStatement preparedStatement = config.createConnection().prepareStatement(insertQuery)) {
             preparedStatement.setString(1, auteur.getName());
 
@@ -46,10 +46,9 @@ public class AuteurRepository {
             ResultSet data = preparedStatement.executeQuery();
 
             if (data.next()) {
-                int id = data.getInt("id"); // Adjust this line based on your database schema
-                // Retrieve other fields as needed
+                int id = data.getInt("id");
 
-                Auteur auteur = new Auteur(id, name); // Create an Auteur object with retrieved data
+                Auteur auteur = new Auteur(id, name);
                 System.out.println(auteur.getId());
                 return auteur;
 

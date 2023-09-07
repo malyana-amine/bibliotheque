@@ -21,6 +21,9 @@ public class Demande {
         this.returned = returned;
     }
 
+    public Demande() {
+    }
+
     public int getId() {
         return id;
     }

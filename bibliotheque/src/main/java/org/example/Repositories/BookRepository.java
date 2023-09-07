@@ -97,7 +97,7 @@ public class BookRepository {
                 MainMenu.menu();
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Handle the exception appropriately, e.g., log it or throw a custom exception
+            e.printStackTrace();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -169,7 +169,7 @@ public class BookRepository {
         String searchQuery = "SELECT * FROM book WHERE title LIKE ? OR id = ? OR auteurid = ?";
 
         try (Connection connection = config.createConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(searchQuery)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(searchQuery)) {
             preparedStatement.setString(1, "%" + searchTerm + "%"); // Search for titles containing the searchTerm
 
             try {

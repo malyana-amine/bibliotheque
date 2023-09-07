@@ -12,6 +12,9 @@ public class Users {
         this.email = email;
         this.phone = phone;
     }
+    public Users() {
+
+    }
 
 
     public int getId() {
