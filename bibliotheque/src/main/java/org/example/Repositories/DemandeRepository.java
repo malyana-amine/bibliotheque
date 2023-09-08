@@ -6,7 +6,9 @@ import org.example.Menu.MainMenu;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class DemandeRepository {
 
@@ -36,6 +38,74 @@ public class DemandeRepository {
             throw new RuntimeException(e);
         }
     }
+    public void markDemandeAsReturned(int demandeId) throws SQLException {
+        String updateQuery = "UPDATE demande SET returned = true, enddate = ? WHERE id = ?";
+
+        try (Connection connection = config.createConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+            preparedStatement.setDate(1, java.sql.Date.valueOf(LocalDate.now())); // Set the return date as the current date
+            preparedStatement.setInt(2, demandeId);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Book returned successfully!");
+            } else {
+                System.out.println("Failed to mark as returned. Demande not found.");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace(); // Handle the exception appropriately, e.g., log it or throw a custom exception
+        }
+        int bookId = getBookIdForDemande(demandeId); // Implement a method to get the book ID for the Demande
+        int quantityReturned = getQuantityForDemande(demandeId); // Implement a method to get the quantity from the Demande
+
+        BookRepository bookRepository = new BookRepository();
+        bookRepository.updateQuantityDispo(bookId, quantityReturned);
+    }
+    // Add a method in DemandeRepository to get the book ID for a Demande
+    public int getBookIdForDemande(int demandeId) throws SQLException {
+        String selectQuery = "SELECT bookid FROM demande WHERE id = ?";
+        int bookId = -1; // Initialize with an invalid value
+
+        try (Connection connection = config.createConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
+            preparedStatement.setInt(1, demandeId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                bookId = resultSet.getInt("bookid");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace(); // Handle the exception appropriately, e.g., log it or throw a custom exception
+        }
+
+        return bookId;
+    }
+
+
+    public int getQuantityForDemande(int demandeId) throws SQLException {
+        String selectQuery = "SELECT quantity FROM demande WHERE id = ?";
+        int quantity = -1; // Initialize with an invalid value
+
+        try (Connection connection = config.createConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
+            preparedStatement.setInt(1, demandeId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                quantity = resultSet.getInt("quantity");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace(); // Handle the exception appropriately, e.g., log it or throw a custom exception
+        }
+
+        return quantity;
+    }
+
+
+
 
 
 }

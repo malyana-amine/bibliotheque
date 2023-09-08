@@ -48,7 +48,9 @@ public class MainMenu {
             System.out.println("5. search book");
             System.out.println("6. display book details");
             System.out.println("7. enprunt book");
+            System.out.println("7. returned book");
             System.out.print("Enter your choice:");
+
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
 
@@ -70,6 +72,8 @@ public class MainMenu {
                     bookService.displayAllBooks();
                 case 7:
                     demandeService.addDemande();
+                case 8:
+                    demandeService.returned();
             }
         }
 

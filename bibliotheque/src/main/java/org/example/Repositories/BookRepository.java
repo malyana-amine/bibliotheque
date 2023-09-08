@@ -170,12 +170,12 @@ public class BookRepository {
 
         try (Connection connection = config.createConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(searchQuery)) {
-            preparedStatement.setString(1, "%" + searchTerm + "%"); // Search for titles containing the searchTerm
+            preparedStatement.setString(1, "%" + searchTerm + "%");
 
             try {
                 int searchTermAsInt = Integer.parseInt(searchTerm);
-                preparedStatement.setInt(2, searchTermAsInt); // Set as integer for id search
-                preparedStatement.setInt(3, searchTermAsInt); // Set as integer for auteurid search
+                preparedStatement.setInt(2, searchTermAsInt); //
+                preparedStatement.setInt(3, searchTermAsInt); //
             } catch (NumberFormatException e) {
                 // Handle the case where searchTerm is not a valid integer
                 preparedStatement.setInt(2, -1); // Set a placeholder value for id (you can choose an appropriate placeholder)
@@ -210,6 +210,25 @@ public class BookRepository {
         }
 
         return foundBooks;
+    }
+    public void updateQuantityDispo(int bookId, int quantity) throws SQLException {
+        String updateQuery = "UPDATE book SET quantitydispo = quantitydispo + ? WHERE id = ?";
+
+        try (Connection connection = config.createConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+            preparedStatement.setInt(1, quantity);
+            preparedStatement.setInt(2, bookId);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Quantity updated successfully!");
+            } else {
+                System.out.println("Failed to update quantity. Book not found.");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace(); // Handle the exception appropriately, e.g., log it or throw a custom exception
+        }
     }
 
 

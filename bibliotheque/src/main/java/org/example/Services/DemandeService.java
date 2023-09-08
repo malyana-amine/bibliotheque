@@ -7,7 +7,9 @@ import org.example.Repositories.BookRepository;
 import org.example.Repositories.DemandeRepository;
 import org.example.Repositories.UserRepository;
 
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -35,7 +37,6 @@ public class DemandeService {
             user.setEmail(scanner.nextLine());
 
             user = userRepository.insert(user);
-
         }
 
         BookRepository bookRepository = new BookRepository();
@@ -79,28 +80,46 @@ public class DemandeService {
 
         System.out.println("Book found: " + book.getTitle());
 
-
-        System.out.println("Enter start date (yyyy-MM-dd):");
-        LocalDate startDate = LocalDate.parse(scanner.nextLine());
+        LocalDate startDate = LocalDate.now();
 
         System.out.println("Enter end date (yyyy-MM-dd):");
-        LocalDate endDate = LocalDate.parse(scanner.nextLine());
+        LocalDate endDate = null;
+
+        while (endDate == null) {
+            try {
+                String endDateStr = scanner.nextLine();
+                endDate = LocalDate.parse(endDateStr);
+
+                if (endDate.isBefore(startDate)) {
+                    System.out.println("End date must be after or equal to the current date.");
+                    endDate = null;
+                }
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date format. Please enter the date in yyyy-MM-dd format.");
+            }
+        }
 
         System.out.println("Enter quantity:");
         int quantity = Integer.parseInt(scanner.nextLine());
 
         boolean returned = false;
 
-
         Demande demande = new Demande(user, book, startDate, endDate, quantity, returned);
-
 
         DemandeRepository demandeRepository = new DemandeRepository();
         demandeRepository.InsertDemande(demande);
 
         System.out.println("Demande added successfully.");
-
     }
+
+    public void returned() throws Exception {
+
+            System.out.println("Enter the Demande ID to return: ");
+            int demandeId = Integer.parseInt(scanner.nextLine());
+
+            DemandeRepository demandeRepository = new DemandeRepository();
+            demandeRepository.markDemandeAsReturned(demandeId);
+        }
 
 
 }
