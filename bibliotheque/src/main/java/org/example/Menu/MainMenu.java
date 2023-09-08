@@ -47,7 +47,8 @@ public class MainMenu {
             System.out.println("4. delete book");
             System.out.println("5. search book");
             System.out.println("6. display book details");
-            System.out.print("Enter your choice: ");
+            System.out.println("7. enprunt book");
+            System.out.print("Enter your choice:");
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
 

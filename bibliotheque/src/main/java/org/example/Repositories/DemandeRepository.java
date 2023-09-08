@@ -17,6 +17,7 @@ public class DemandeRepository {
         try (Connection connection = config.createConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
             preparedStatement.setInt(1, demande.getUser().getId());
+            System.out.println(demande.getUser().getId());
             preparedStatement.setInt(2, demande.getBook().getId());
             preparedStatement.setDate(3, java.sql.Date.valueOf(demande.getStartdate()));
             preparedStatement.setDate(4, java.sql.Date.valueOf(demande.getEnddate()));
@@ -29,6 +30,7 @@ public class DemandeRepository {
                 MainMenu.menu();
             }
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             e.printStackTrace(); // Handle the exception appropriately, e.g., log it or throw a custom exception
         } catch (Exception e) {
             throw new RuntimeException(e);
