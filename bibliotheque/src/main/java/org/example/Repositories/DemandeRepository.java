@@ -1,7 +1,9 @@
 package org.example.Repositories;
 
 import org.example.Config.Config;
+import org.example.Entities.Book;
 import org.example.Entities.Demande;
+import org.example.Entities.Users;
 import org.example.Menu.MainMenu;
 
 import java.sql.Connection;
@@ -9,6 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class DemandeRepository {
 
@@ -39,6 +44,7 @@ public class DemandeRepository {
         }
     }
     public void markDemandeAsReturned(int demandeId) throws SQLException {
+
         String updateQuery = "UPDATE demande SET returned = true, enddate = ? WHERE id = ?";
 
         try (Connection connection = config.createConnection();
@@ -62,7 +68,7 @@ public class DemandeRepository {
         BookRepository bookRepository = new BookRepository();
         bookRepository.updateQuantityDispo(bookId, quantityReturned);
     }
-    // Add a method in DemandeRepository to get the book ID for a Demande
+
     public int getBookIdForDemande(int demandeId) throws SQLException {
         String selectQuery = "SELECT bookid FROM demande WHERE id = ?";
         int bookId = -1; // Initialize with an invalid value
@@ -103,6 +109,46 @@ public class DemandeRepository {
 
         return quantity;
     }
+    public List<Demande> getAllDemande() {
+        List<Demande> demandeList = new ArrayList<>();
+
+        String selectQuery = "SELECT d.id, d.startdate, d.enddate, d.quantity, d.returned, u.id AS user_id, u.fullName, b.id AS book_id, b.title " +
+                "FROM demande d " +
+                "INNER JOIN users u ON d.userid = u.id " +
+                "INNER JOIN book b ON d.bookid = b.id";
+
+        try (Connection connection = config.createConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Demande demande = new Demande();
+                demande.setId(resultSet.getInt("id"));
+                demande.setStartdate(resultSet.getDate("startdate").toLocalDate());
+                demande.setEnddate(resultSet.getDate("enddate").toLocalDate());
+                demande.setQuantity(resultSet.getInt("quantity"));
+                demande.setReturned(resultSet.getBoolean("returned"));
+
+                Users user = new Users();
+                user.setId(resultSet.getInt("user_id"));
+                user.setFullname(resultSet.getString("fullname"));
+                demande.setUser(user);
+
+                Book book = new Book();
+                book.setId(resultSet.getInt("book_id"));
+                book.setTitle(resultSet.getString("title"));
+                demande.setBook(book);
+
+                demandeList.add(demande);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace(); // Handle the exception appropriately, e.g., log it or throw a custom exception
+        }
+
+        return demandeList;
+    }
+
 
 
 

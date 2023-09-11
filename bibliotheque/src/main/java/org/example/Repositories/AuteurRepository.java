@@ -23,7 +23,7 @@ public class AuteurRepository {
             if (rowsAffected > 0) {
                 Auteur auteur2 = findByName(auteur.getName());
                 System.out.println("Auteur added successfully with ID: " + auteur2.getId()+auteur2.getName());
-                MainMenu.menu();
+
                 return auteur2;
 
             } else {

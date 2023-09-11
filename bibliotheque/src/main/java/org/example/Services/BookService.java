@@ -18,31 +18,56 @@ public class BookService {
         System.out.print("Enter book title: ");
         book.setTitle(scanner.nextLine());
 
-        System.out.print("Enter book quantity: ");
-        book.setQuantitytotal(scanner.nextInt());
+        // Validate and get book quantity
+        int quantity;
+        while (true) {
+            try {
+                System.out.print("Enter book quantity: ");
+                quantity = Integer.parseInt(scanner.nextLine());
+                if (quantity < 0) {
+                    throw new NumberFormatException(); // Ensure quantity is non-negative
+                }
+                break; // Exit loop if valid input
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a non-negative integer for quantity.");
+            }
+        }
+        book.setQuantitytotal(quantity);
 
-        System.out.print("Enter book prix: ");
-        book.setPrix(scanner.nextFloat());
 
-        System.out.print("Enter book isbn: ");
-        scanner.nextLine();
+        float price;
+        while (true) {
+            try {
+                System.out.print("Enter book price: ");
+                price = Float.parseFloat(scanner.nextLine());
+                if (price < 0) {
+                    throw new NumberFormatException();
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a non-negative float for price.");
+            }
+        }
+        book.setPrix(price);
+
+        System.out.print("Enter book ISBN: ");
         book.setIsbn(scanner.nextLine());
 
         System.out.print("Enter book author: ");
-
         String authorName = scanner.nextLine();
 
-
-
-
-
         AuteurRepository auteurRepository = new AuteurRepository();
-
         Auteur author = auteurRepository.findByName(authorName);
-        System.out.println(author.getId()+"sdfsf");
-        book.setAuteur(author);
-        bookRepository.Insert(book);
+
+        if (author != null) {
+            book.setAuteur(author);
+            bookRepository.Insert(book);
+            System.out.println("Book added successfully.");
+        } else {
+            System.out.println("Author not found. Please enter a valid author name.");
+        }
     }
+
     public void updateBook() throws Exception {
         System.out.print("Enter book ISBN: ");
         int isbn = scanner.nextInt();
@@ -65,25 +90,41 @@ public class BookService {
         System.out.print("Enter new book quantity (or press Enter to keep the current quantity): ");
         String quantityInput = scanner.nextLine();
         if (!quantityInput.isEmpty()) {
-            int newQuantity = Integer.parseInt(quantityInput);
-            foundBook.setQuantitytotal(newQuantity);
+            try {
+                int newQuantity = Integer.parseInt(quantityInput);
+                if (newQuantity >= 0) {
+                    foundBook.setQuantitytotal(newQuantity);
+                } else {
+                    System.out.println("Invalid input. Quantity must be a non-negative integer.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Quantity must be a non-negative integer.");
+            }
         }
 
         System.out.print("Enter new book price (or press Enter to keep the current price): ");
         String priceInput = scanner.nextLine();
         if (!priceInput.isEmpty()) {
-            float newPrice = Float.parseFloat(priceInput);
-            foundBook.setPrix(newPrice);
+            try {
+                float newPrice = Float.parseFloat(priceInput);
+                if (newPrice >= 0) {
+                    foundBook.setPrix(newPrice);
+                } else {
+                    System.out.println("Invalid input. Price must be a non-negative float.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Price must be a non-negative float.");
+            }
         }
 
-        System.out.print("Enter book isbn: ");
+        System.out.print("Enter new book ISBN: ");
         String newIsbn = scanner.nextLine();
         foundBook.setIsbn(newIsbn);
-
 
         bookRepository.update(foundBook);
         System.out.println("Book updated successfully!");
     }
+
 
 
     public void deleteBook() throws Exception {

@@ -79,7 +79,7 @@ public class BookRepository {
 
 
     public void update(Book book) throws SQLException {
-        String updateQuery = "UPDATE book SET title = ?, quantitytotal = ?, quantitydispo = ?, prix = ?, auteurid = 5, isbn = ? WHERE id = ?";
+        String updateQuery = "UPDATE book SET title = ?, quantitytotal = ?, quantitydispo = ?, prix = ?, isbn = ? WHERE id = ?";
 
         try (Connection connection = config.createConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
