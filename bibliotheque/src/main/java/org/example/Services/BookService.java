@@ -18,16 +18,16 @@ public class BookService {
         System.out.print("Enter book title: ");
         book.setTitle(scanner.nextLine());
 
-        // Validate and get book quantity
+
         int quantity;
         while (true) {
             try {
                 System.out.print("Enter book quantity: ");
                 quantity = Integer.parseInt(scanner.nextLine());
                 if (quantity < 0) {
-                    throw new NumberFormatException(); // Ensure quantity is non-negative
+                    throw new NumberFormatException();
                 }
-                break; // Exit loop if valid input
+                break;
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a non-negative integer for quantity.");
             }
@@ -69,17 +69,22 @@ public class BookService {
     }
 
     public void updateBook() throws Exception {
-        System.out.print("Enter book ISBN: ");
-        int isbn = scanner.nextInt();
-        scanner.nextLine();
+        int id = 0;
+        try {
+            System.out.print("Enter book ID: ");
+            id = scanner.nextInt();
+            scanner.nextLine();
+        } catch (Exception e) {
+            System.out.println("Invalid input. Please enter a valid integer.");
+        }
 
         BookRepository bookRepository = new BookRepository();
-        Book foundBook = bookRepository.findBook(isbn);
+        Book foundBook = bookRepository.findBook(id);
 
         if (foundBook == null) {
-            System.out.println("Book not found with ISBN: " + isbn);
-            return;
+            System.out.println("Book not found with ID: " + id);
         }
+
 
         System.out.print("Enter new book title (or press Enter to keep the current title): ");
         String newTitle = scanner.nextLine();
@@ -97,7 +102,7 @@ public class BookService {
                 } else {
                     System.out.println("Invalid input. Quantity must be a non-negative integer.");
                 }
-            } catch (NumberFormatException e) {
+            } catch (Exception e) {
                 System.out.println("Invalid input. Quantity must be a non-negative integer.");
             }
         }

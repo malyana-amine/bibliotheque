@@ -7,20 +7,17 @@ import org.example.Repositories.BookRepository;
 import org.example.Repositories.DemandeRepository;
 import org.example.Repositories.UserRepository;
 
-import org.example.Entities.Demande;
+
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.List;
 import java.util.Scanner;
 
 public class DemandeService {
 
     Demande demande = new Demande();
     Scanner scanner = new Scanner(System.in);
+    DemandeRepository demandeRepository = new DemandeRepository();
     public void addDemande() throws Exception {
         Scanner scanner = new Scanner(System.in);
 
@@ -130,83 +127,22 @@ public class DemandeService {
         }
 
 
-      //  public void displayDemandeStatistics(List<Demande> demandeList) {
-      //      int totalDemandes = demandeList.size();
-       //     int returnedDemandes = 0;
-      //      int totalQuantity = 0;
-
-     //       for (Demande demande : demandeList) {
-      //          if (demande.isReturned()) {
-      //              returnedDemandes++;
-      //          }
-       //         totalQuantity += demande.getQuantity();
-      //      }
-
-       //     System.out.println("Demande Statistics:");
-       //     System.out.println("Total Demandes: " + totalDemandes);
-       //     System.out.println("Returned Demandes: " + returnedDemandes);
-      //      System.out.println("Total Quantity Requested: " + totalQuantity);
-      //  }
-
     public void displayDemandeStatistics() {
-        DemandeRepository demandeRepository = new DemandeRepository();
-        List<Demande> demandeList = demandeRepository.getAllDemande();
-        // Create maps to store statistics
-        Map<Users, Integer> userDemandeCount = new HashMap<>();
-        Map<Book, Integer> bookDemandeCount = new HashMap<>();
-        Map<LocalDate, Integer> startDateCount = new HashMap<>();
-        Map<LocalDate, Integer> endDateCount = new HashMap<>();
 
-        // Calculate statistics
-        for (Demande demande : demandeList) {
-            // User statistics
-            Users user = demande.getUser();
-            userDemandeCount.put(user, userDemandeCount.getOrDefault(user, 0) + 1);
+                List<Demande> demandeList = demandeRepository.getAllDemande();
 
-            // Book statistics
-            Book book = demande.getBook();
-            bookDemandeCount.put(book, bookDemandeCount.getOrDefault(book, 0) + 1);
 
-            // Start date statistics
-            LocalDate startDate = demande.getStartdate();
-            startDateCount.put(startDate, startDateCount.getOrDefault(startDate, 0) + 1);
+                for (Demande demande : demandeList) {
+                    System.out.println("Demande ID: " + demande.getId());
+                    System.out.println("Start Date: " + demande.getStartdate());
+                    System.out.println("End Date: " + demande.getEnddate());
+                    System.out.println("Quantity: " + demande.getQuantity());
+                    System.out.println("Returned: " + demande.isReturned());
 
-            // End date statistics
-            LocalDate endDate = demande.getEnddate();
-            endDateCount.put(endDate, endDateCount.getOrDefault(endDate, 0) + 1);
-        }
+                    System.out.println("User Full Name: " + demande.getUser().getFullname());
 
-        // Display user statistics
-        System.out.println("User Statistics:");
-        for (Map.Entry<Users, Integer> entry : userDemandeCount.entrySet()) {
-            Users user = entry.getKey();
-            int demandeCount = entry.getValue();
-            System.out.println(user.getFullname() + ": " + demandeCount + " demandes");
-        }
-
-        // Display book statistics
-        System.out.println("\nBook Statistics:");
-        for (Map.Entry<Book, Integer> entry : bookDemandeCount.entrySet()) {
-            Book book = entry.getKey();
-            int demandeCount = entry.getValue();
-            System.out.println(book.getTitle() + ": " + demandeCount + " demandes");
-        }
-
-        // Display start date statistics
-        System.out.println("\nStart Date Statistics:");
-        for (Map.Entry<LocalDate, Integer> entry : startDateCount.entrySet()) {
-            LocalDate startDate = entry.getKey();
-            int demandeCount = entry.getValue();
-            System.out.println(startDate + ": " + demandeCount + " demandes");
-        }
-
-        // Display end date statistics
-        System.out.println("\nEnd Date Statistics:");
-        for (Map.Entry<LocalDate, Integer> entry : endDateCount.entrySet()) {
-            LocalDate endDate = entry.getKey();
-            int demandeCount = entry.getValue();
-            System.out.println(endDate + ": " + demandeCount + " demandes");
-        }
-    }
-
+                    System.out.println("Book Title: " + demande.getBook().getTitle());
+                    System.out.println("---------------------------------");
+                }
+            }
 }

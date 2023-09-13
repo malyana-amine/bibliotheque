@@ -15,19 +15,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import static java.sql.Date.valueOf;
+
+
 public class DemandeRepository {
 
     Config config = new Config();
-    public void InsertDemande(Demande demande) throws SQLException {
+    public void InsertDemande(Demande demande) {
         String insertQuery = "INSERT INTO demande (userid, bookid, startdate, enddate, quantity, returned) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = config.createConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
             preparedStatement.setInt(1, demande.getUser().getId());
-            System.out.println(demande.getUser().getId());
+
             preparedStatement.setInt(2, demande.getBook().getId());
-            preparedStatement.setDate(3, java.sql.Date.valueOf(demande.getStartdate()));
-            preparedStatement.setDate(4, java.sql.Date.valueOf(demande.getEnddate()));
+            preparedStatement.setDate(3, valueOf(demande.getStartdate()));
+            preparedStatement.setDate(4, valueOf(demande.getEnddate()));
             preparedStatement.setInt(5, demande.getQuantity());
             preparedStatement.setBoolean(6, demande.isReturned());
 
@@ -36,11 +39,9 @@ public class DemandeRepository {
                 System.out.println("Demande added successfully!");
                 MainMenu.menu();
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace(); // Handle the exception appropriately, e.g., log it or throw a custom exception
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
     public void markDemandeAsReturned(int demandeId) throws SQLException {
@@ -49,7 +50,7 @@ public class DemandeRepository {
 
         try (Connection connection = config.createConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
-            preparedStatement.setDate(1, java.sql.Date.valueOf(LocalDate.now())); // Set the return date as the current date
+            preparedStatement.setDate(1, valueOf(LocalDate.now())); // Set the return date as the current date
             preparedStatement.setInt(2, demandeId);
 
             int rowsAffected = preparedStatement.executeUpdate();
@@ -60,10 +61,10 @@ public class DemandeRepository {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            e.printStackTrace(); // Handle the exception appropriately, e.g., log it or throw a custom exception
+            e.printStackTrace();
         }
-        int bookId = getBookIdForDemande(demandeId); // Implement a method to get the book ID for the Demande
-        int quantityReturned = getQuantityForDemande(demandeId); // Implement a method to get the quantity from the Demande
+        int bookId = getBookIdForDemande(demandeId);
+        int quantityReturned = getQuantityForDemande(demandeId);
 
         BookRepository bookRepository = new BookRepository();
         bookRepository.updateQuantityDispo(bookId, quantityReturned);
@@ -71,7 +72,7 @@ public class DemandeRepository {
 
     public int getBookIdForDemande(int demandeId) throws SQLException {
         String selectQuery = "SELECT bookid FROM demande WHERE id = ?";
-        int bookId = -1; // Initialize with an invalid value
+        int bookId = -1;
 
         try (Connection connection = config.createConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
@@ -83,16 +84,16 @@ public class DemandeRepository {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            e.printStackTrace(); // Handle the exception appropriately, e.g., log it or throw a custom exception
+            e.printStackTrace();
         }
 
         return bookId;
     }
 
 
-    public int getQuantityForDemande(int demandeId) throws SQLException {
+    public int getQuantityForDemande(int demandeId) {
         String selectQuery = "SELECT quantity FROM demande WHERE id = ?";
-        int quantity = -1; // Initialize with an invalid value
+        int quantity = -1;
 
         try (Connection connection = config.createConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
@@ -104,7 +105,7 @@ public class DemandeRepository {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            e.printStackTrace(); // Handle the exception appropriately, e.g., log it or throw a custom exception
+            e.printStackTrace();
         }
 
         return quantity;
@@ -143,7 +144,7 @@ public class DemandeRepository {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            e.printStackTrace(); // Handle the exception appropriately, e.g., log it or throw a custom exception
+            e.printStackTrace();
         }
 
         return demandeList;

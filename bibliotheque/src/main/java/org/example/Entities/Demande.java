@@ -1,6 +1,8 @@
 package org.example.Entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Demande {
 

@@ -1,9 +1,9 @@
 package org.example.Repositories;
 
 import org.example.Config.Config;
-import org.example.Entities.Auteur;
+
 import org.example.Entities.Users;
-import org.example.Menu.MainMenu;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,8 +13,7 @@ import java.sql.SQLException;
 public class UserRepository {
 
     Config config = new Config();
-    //Users users = new Users();
-    //UserRepository userRepository = new UserRepository();
+
     public Users insert(Users user) {
         String insertQuery = "INSERT INTO users (fullname, email, phone) VALUES (?, ?, ?)";
         try { Connection connection = config.createConnection();
